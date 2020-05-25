@@ -1,0 +1,28 @@
+﻿<Properties StartupConfiguration="{45837A06-D562-46A1-82A5-292BB07AAB25}|">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Models/SnowModel.cs">
+    <Files>
+      <File FileName="Models/SnowModel.cs" Line="259" Column="13" />
+      <File FileName="Controllers/SnowController.cs" Line="61" Column="35" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="irimhe" expanded="True" selected="True">
+            <Node name="irimhe" expanded="True">
+              <Node name="References" expanded="True" />
+              <Node name="Controllers" expanded="True" />
+              <Node name="Models" expanded="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.irimhe PreferredExecutionTarget="/Applications/Google Chrome.app" />
+</Properties>

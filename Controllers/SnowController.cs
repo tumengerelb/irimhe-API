@@ -55,6 +55,13 @@ namespace irimhe.Controllers
         public string snow_multi_station(string[] sindex)
         {
 
+            string ret = "";
+            SnowModel snow = new SnowModel();
+
+            ret = snow.multistaion(index);
+
+            return ret;
         }
+       
     }
 }

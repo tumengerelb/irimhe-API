@@ -275,5 +275,14 @@ namespace irimhe.Models
 
             return JsonString;
         }
+
+        public string multistaion(string[] sindex)
+        {
+            string ret = "";
+
+            
+
+            return ret;
+        }
     }
 }
