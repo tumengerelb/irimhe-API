@@ -43,9 +43,11 @@ namespace irimhe.Models
         {
             //public string sid { get; set; }
             public int sindex { get; set; }
-            public string year { get; set; }
-            public string month { get; set; }
-            public string num_of_month { get; set; }
+
+            public string date { get; set; }
+            //public string year { get; set; }
+            //public string month { get; set; }
+            //public string num_of_month { get; set; }
             public string height_snow_west { get; set; }
             public string density_snow_west { get; set; }
             public string height_snow_north { get; set; }
@@ -140,8 +142,7 @@ namespace irimhe.Models
             //SnowDirectionModel temp = new SnowDirectionModel();
             Properties prop = new Properties();
             //prop.sid = temps[count].sid;
-            prop.month = temps[count].month;
-            prop.year = temps[count].year;
+            prop.date = temps[count].num_of_month + "/" + temps[count].month + "/" + temps[count].year;
             prop.sindex = temps[count].sindex;
             prop.density_snow_north = temps[count].density_snow_north;
             prop.density_snow_west = temps[count].density_snow_west;

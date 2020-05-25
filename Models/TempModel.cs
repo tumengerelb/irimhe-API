@@ -45,9 +45,7 @@ namespace irimhe.Models
         public class Properties
         {
             public int sindex { get; set; }
-            public string year { get; set; }
-            public string month { get; set; }
-            public string num_of_month { get; set; }
+            public string date { get;set }
             public string lat { get; set; }
             public string lon { get; set; }
             //public string fid { get; set; }
@@ -152,10 +150,12 @@ namespace irimhe.Models
         {
             //TempModel temp = new TempModel();
             Properties properties = new Properties();
-            properties.month = temps[count].month;
-            properties.year = temps[count].year;
+            //properties.month = temps[count].month;
+            //properties.year = temps[count].year;
             properties.sindex = temps[count].sindex;
-            properties.num_of_month = temps[count].num_of_month;
+            //properties.num_of_month = temps[count].num_of_month;
+
+            properties.date = temps[count].num_of_month + "/" + temps[count].month + "/" + temps[count].year;
             properties.lat = temps[count].lat;
             properties.lon = temps[count].lon;
             //properties.fid = temps[count].fid;

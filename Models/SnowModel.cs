@@ -35,9 +35,10 @@ namespace irimhe.Models
         public class Properties
         {
             public string sindex { get; set; }
-            public string year { get; set; }
-            public string month { get; set; }
-            public string num_of_month { get; set; }
+            //public string year { get; set; }
+            //public string month { get; set; }
+            //public string num_of_month { get; set; }
+            public string date { get;set }
             public string Height_of_Snow { get; set; }
             public string Density_of_Snow { get; set; }
             public string Field_of_Snow { get; set; }
@@ -102,8 +103,7 @@ namespace irimhe.Models
         {
             //SnowModel temp = new SnowModel();
             Properties prop = new Properties();
-            prop.month = temps[count].month;
-            prop.year = temps[count].year;
+            prop.date = temps[count].num_of_month + "/" + temps[count].month + "/" + temps[count].year;
             prop.sindex = temps[count].sindex;
             prop.Density_of_Snow = temps[count].Density_of_Snow;
             prop.Field_of_Snow = temps[count].Field_of_Snow;
