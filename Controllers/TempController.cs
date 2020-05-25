@@ -53,7 +53,7 @@ namespace irimhe.Controllers
         }
         
         [HttpPost]
-        public string multi_station([System.Web.Http.FromBody]string[] sindex, [System.Web.Http.FromBody]string[] date, [System.Web.Http.FromBody]string[] ttt_aver)
+        public string multi_station([System.Web.Http.FromBody]string[] sindex)
         {
             string ret = "";
 
@@ -63,13 +63,9 @@ namespace irimhe.Controllers
             {
                 ret = temp.multi_station(sindex);
             }
-            if(date.Length !=0)
+            else
             {
-
-            }
-            if(ttt_aver.Length !=0)
-            {
-                
+                ret = "error";
             }
 
             return ret;
