@@ -38,7 +38,7 @@ namespace irimhe.Models
             //public string year { get; set; }
             //public string month { get; set; }
             //public string num_of_month { get; set; }
-            public string date { get;set }
+            public string date { get; set; }
             public string Height_of_Snow { get; set; }
             public string Density_of_Snow { get; set; }
             public string Field_of_Snow { get; set; }

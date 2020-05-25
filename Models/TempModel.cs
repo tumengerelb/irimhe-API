@@ -45,7 +45,7 @@ namespace irimhe.Models
         public class Properties
         {
             public int sindex { get; set; }
-            public string date { get;set }
+            public string date { get; set; }
             public string lat { get; set; }
             public string lon { get; set; }
             //public string fid { get; set; }
