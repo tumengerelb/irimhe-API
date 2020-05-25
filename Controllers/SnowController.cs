@@ -58,7 +58,7 @@ namespace irimhe.Controllers
             string ret = "";
             SnowModel snow = new SnowModel();
 
-            ret = snow.multistaion(index);
+            ret = snow.multistaion(sindex);
 
             return ret;
         }

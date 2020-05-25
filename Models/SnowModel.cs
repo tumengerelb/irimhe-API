@@ -280,7 +280,10 @@ namespace irimhe.Models
         {
             string ret = "";
 
-            
+            for(int i=0;i>sindex.Length;i++)
+            {
+
+            }
 
             return ret;
         }
