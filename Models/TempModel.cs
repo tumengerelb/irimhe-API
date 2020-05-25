@@ -385,5 +385,32 @@ namespace irimhe.Models
 
             return JsonString;
         }
+        public string multi_station(string[] sindex)
+        {
+            ConnDB conn = new ConnDB();
+            string ret = "";
+            for (int i = 0; i < sindex.Length; i++)
+            {
+                string sql = "select t_800_80.fid,t_800_80.sindex,t_800_80.year,t_800_80.month,t_800_80.num_of_month,t_800_80.WW_Max,"
+                + "t_800_80.TTT_Aver,t_800_80.TTT_Max ,t_800_80.Num_of_Tmax ,t_800_80.TTT_Min,t_800_80.Sum_of_RRR ,t_800_80.TxTxTxAver,"
+                + "t_800_80.txtxtx_max,t_800_80.num_of_tmin,t_800_80.Num_of_RRR ,t_800_80.Num_of_Tx_Max,t_800_80.TxTxTx_Min,station2.lat,station2.lon " +
+                "from t_800_80 inner join station2 on t_800_80.sindex = " + sindex[i] + "";
+
+                NpgsqlCommand cmd = conn.RunCmdPG(sql);
+                NpgsqlDataAdapter da = new NpgsqlDataAdapter(cmd);
+
+                DataSet data = new DataSet();
+
+                da.Fill(data);
+                conn.ClosePG();
+
+                string JsonString = string.Empty;
+                JsonString = JsonConvert.SerializeObject(ConstructModel(DataTableToList(data.Tables[0])));
+
+                ret += JsonString;
+            }
+
+            return ret;
+        }
     }
 }

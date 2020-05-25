@@ -51,14 +51,30 @@ namespace irimhe.Controllers
 
             return ret;
         }
-        /*
+        
         [HttpPost]
-        public string station( DateTime ognoo,string station)
+        public string multi_station([System.Web.Http.FromBody]string[] sindex, [System.Web.Http.FromBody]string[] date, [System.Web.Http.FromBody]string[] ttt_aver)
         {
+            string ret = "";
+
             TempModel temp = new TempModel();
-            var ten = temp.DateTimeTotenDay(ognoo);
-            return 
+            
+            if( sindex.Length != 0 )
+            {
+                ret = temp.multi_station(sindex);
+            }
+            if(date.Length !=0)
+            {
+
+            }
+            if(ttt_aver.Length !=0)
+            {
+                
+            }
+
+            return ret;
         }
+        /*
         [HttpPost]
         public string check(string station2)
         {

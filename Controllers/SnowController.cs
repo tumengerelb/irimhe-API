@@ -51,14 +51,17 @@ namespace irimhe.Controllers
             return ret;
         }
         [HttpPost]
-
         public string snow_multi_station(string[] sindex)
         {
 
             string ret = "";
+
             SnowModel snow = new SnowModel();
 
-            ret = snow.multistaion(sindex);
+            if (sindex.Length != 0)
+            {
+                ret = snow.multi_staion(sindex);
+            }
 
             return ret;
         }
