@@ -20,19 +20,33 @@ namespace irimhe.Controllers
         [HttpPost]
         public string irimhe_snow(DateTime dateTime,string station)
         {
-            SnowModel temp = new SnowModel();
+            SnowModel snow = new SnowModel();
             string ret = "";
 
             if (string.IsNullOrEmpty(station))
             {
-                var ten = temp.DateTimeTotenDay(dateTime);
-                ret = temp.PullDataPGDB_station(ten);
+                var ten = snow.DateTimeTotenDay(dateTime);
+                ret = snow.PullDataPGDB_station(ten);
             }
             else
             {
-                var ten = temp.DateTimeTotenDay(dateTime);
-                ret = temp.PullData_station(station,ten);
+                var ten = snow.DateTimeTotenDay(dateTime);
+                ret = snow.PullData_station(station,ten);
             }
+
+            return ret;
+        }
+        [HttpPost]
+        public string irimhe_snow_date(DateTime beginDateTime, DateTime endDateTime)
+        {
+            //
+            SnowModel snow = new SnowModel();
+            string ret = "";
+
+            var begindate = snow.DateTimeTotenDay(beginDateTime);
+            var enddate = snow.DateTimeTotenDay(endDateTime);
+
+            ret = snow.PullData_begin_end(begindate, enddate);
 
             return ret;
         }

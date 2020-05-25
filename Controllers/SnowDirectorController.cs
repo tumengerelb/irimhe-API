@@ -33,5 +33,21 @@ namespace irimhe.Controllers
 
             return ret;
         }
+
+        [HttpPost]
+        public string irimhe_snow_date(DateTime beginDateTime, DateTime endDateTime)
+        {
+            //
+            SnowDirectionModel snow = new SnowDirectionModel();
+            string ret = "";
+
+            var begindate = snow.DateTimeTotenDay(beginDateTime);
+            var enddate = snow.DateTimeTotenDay(endDateTime);
+
+            ret = snow.PullData_begin_end(begindate, enddate);
+
+            return ret;
+        }
+
     }
 }

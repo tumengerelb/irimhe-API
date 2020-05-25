@@ -325,6 +325,28 @@ namespace irimhe.Models
 
             return JsonString;
         }
+        public string PullData_begin_end(tenday begindate, tenday enddate)
+        {
+            ConnDB conn = new ConnDB();
+
+            string sql = "select t_800_93.id, t_800_93.sindex, t_800_93.year, t_800_93.month, t_800_93.num_of_month, t_800_93.height_snow_west, t_800_93.density_snow_west, t_800_93.height_snow_north, t_800_93.density_snow_north, t_800_93.height_snow_east, t_800_93.density_snow_east, t_800_93.height_snow_south, t_800_93.density_snow_south, t_800_93.field_of_west, t_800_93.field_of_north, t_800_93.field_of_east, t_800_93.field_of_south, t_800_93.update_time " +
+                ",station2.lat,station2.lon " +
+                "from t_800_93 inner join station2 on t_800_93.sindex = station2.sindex where t_800_93.year = " + begindate.year + " and t_800_93.month = " + begindate.month + " and t_800_93.num_of_month =" + begindate.num_of_month + " or t_800_93.year = " + enddate.year + " and t_800_93.month =" + enddate.month + " "
+                + " and t_800_93.num_of_month =" + enddate.num_of_month + " ";
+
+            NpgsqlCommand cmd = conn.RunCmdPG(sql);
+            NpgsqlDataAdapter da = new NpgsqlDataAdapter(cmd);
+
+            DataSet data = new DataSet();
+
+            da.Fill(data);
+            conn.ClosePG();
+
+            string JsonString = string.Empty;
+            JsonString = JsonConvert.SerializeObject(ConstructModel(DataTableToList(data.Tables[0])));
+
+            return JsonString;
+        }
 
     }
 }

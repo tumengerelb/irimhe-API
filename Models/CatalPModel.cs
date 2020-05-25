@@ -30,7 +30,7 @@ namespace irimhe.Models
         {
             ConnDB conn = new ConnDB();
 
-            string sql = "select * from agro_catal_p where index" + station + "";
+            string sql = "select * from agro_catal_p where index = " + station + "";
 
             NpgsqlCommand cmd = conn.RunCmdPG(sql);
             NpgsqlDataAdapter da = new NpgsqlDataAdapter(cmd);
