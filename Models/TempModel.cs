@@ -45,9 +45,9 @@ namespace irimhe.Models
         public class Properties
         {
             public int sindex { get; set; }
-            //public string year { get; set; }
-            //public string month { get; set; }
-            //public string num_of_month { get; set; }
+            public string year { get; set; }
+            public string month { get; set; }
+            public string num_of_month { get; set; }
             public string lat { get; set; }
             public string lon { get; set; }
             //public string fid { get; set; }
@@ -152,10 +152,10 @@ namespace irimhe.Models
         {
             //TempModel temp = new TempModel();
             Properties properties = new Properties();
-            //properties.month = temps[count].month;
-            //properties.year = temps[count].year;
+            properties.month = temps[count].month;
+            properties.year = temps[count].year;
             properties.sindex = temps[count].sindex;
-            //properties.num_of_month = temps[count].num_of_month;
+            properties.num_of_month = temps[count].num_of_month;
             properties.lat = temps[count].lat;
             properties.lon = temps[count].lon;
             //properties.fid = temps[count].fid;
@@ -348,6 +348,28 @@ namespace irimhe.Models
 
             return JsonString;
         }
+        public string PullData_begin_end(tenday begindate,tenday enddate)
+        {
+            ConnDB conn = new ConnDB();
 
+            string sql = "select t_800_80.fid,t_800_80.sindex,t_800_80.year,t_800_80.month,t_800_80.num_of_month,t_800_80.WW_Max,"
+                + "t_800_80.TTT_Aver,t_800_80.TTT_Max ,t_800_80.Num_of_Tmax ,t_800_80.TTT_Min,t_800_80.Sum_of_RRR ,t_800_80.TxTxTxAver,"
+                + "t_800_80.txtxtx_max,t_800_80.num_of_tmin,t_800_80.Num_of_RRR ,t_800_80.Num_of_Tx_Max,t_800_80.TxTxTx_Min,station2.lat,station2.lon " +
+                "from t_800_80 inner join station2 on t_800_80.sindex = station2.sindex where t_800_80.year = "+begindate.year+ " and t_800_80.month = "+begindate.month +" and t_800_80.num_of_month ="+begindate.num_of_month+" or t_800_80.year = "+enddate.year+" and t_800_80.month =" +enddate.month+ " " 
+                +" and t_800_80.num_of_month ="+enddate.num_of_month+" ";
+
+            NpgsqlCommand cmd = conn.RunCmdPG(sql);
+            NpgsqlDataAdapter da = new NpgsqlDataAdapter(cmd);
+
+            DataSet data = new DataSet();
+
+            da.Fill(data);
+            conn.ClosePG();
+
+            string JsonString = string.Empty;
+            JsonString = JsonConvert.SerializeObject(ConstructModel(DataTableToList(data.Tables[0])));
+
+            return JsonString;
+        }
     }
 }

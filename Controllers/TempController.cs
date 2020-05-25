@@ -37,6 +37,20 @@ namespace irimhe.Controllers
 
             return ret;
         }
+        [HttpPost]
+        public string irimhe_temp_date(DateTime beginDateTime,DateTime endDateTime)
+        {
+            //
+            TempModel temp = new TempModel();
+            string ret = "";
+
+            var begindate = temp.DateTimeTotenDay(beginDateTime);
+            var enddate = temp.DateTimeTotenDay(endDateTime);
+
+            temp.PullData_begin_end(begindate,enddate);
+
+            return ret;
+        }
         /*
         [HttpPost]
         public string station( DateTime ognoo,string station)
