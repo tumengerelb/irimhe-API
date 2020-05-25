@@ -50,5 +50,11 @@ namespace irimhe.Controllers
 
             return ret;
         }
+        [HttpPost]
+
+        public string snow_multi_station(string[] sindex)
+        {
+
+        }
     }
 }
