@@ -407,10 +407,11 @@ namespace irimhe.Models
 
             conn.ClosePG();
 
-            foreach (DataTable data1 in data.Tables)
+            for(int i=0;i< data.Tables.Count;i++)
             {
-                bgtable.Merge(data1);
+                bgtable.Merge(data.Tables[i]);
             }
+            
             string JsonString = "";
             JsonString = JsonConvert.SerializeObject(ConstructModel(DataTableToList(bgtable)));
                         

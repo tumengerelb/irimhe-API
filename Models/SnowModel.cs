@@ -276,10 +276,13 @@ namespace irimhe.Models
             return JsonString;
         }
 
-        public string multi_staion(string[] sindex)
+        public string multi_station(string[] sindex)
         {
             ConnDB conn = new ConnDB();
-            string ret = "";
+            
+            DataTable bgtable = new DataTable();
+            DataSet data = new DataSet();
+
             for (int i = 0; i < sindex.Length; i++)
             {
                 string sql = "select t_800_83.fid,t_800_83.sindex,t_800_83.year,t_800_83.month,t_800_83.num_of_month,t_800_83.WW_Max,"
@@ -290,18 +293,19 @@ namespace irimhe.Models
                 NpgsqlCommand cmd = conn.RunCmdPG(sql);
                 NpgsqlDataAdapter da = new NpgsqlDataAdapter(cmd);
 
-                DataSet data = new DataSet();
+                da.Fill(data);               
+            }
+            conn.ClosePG();
 
-                da.Fill(data);
-                conn.ClosePG();
-
-                string JsonString = string.Empty;
-                JsonString = JsonConvert.SerializeObject(ConstructModel(DataTableToList(data.Tables[0])));
-
-                ret += JsonString;
+            for (int i = 0; i < data.Tables.Count; i++)
+            {
+                bgtable.Merge(data.Tables[i]);
             }
 
-            return ret;
+            string JsonString = "";
+            JsonString = JsonConvert.SerializeObject(ConstructModel(DataTableToList(bgtable)));
+
+            return JsonString;
         }
     }
 }
