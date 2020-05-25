@@ -10,7 +10,9 @@ namespace irimhe.Models
 {
     public class SnowModel
     {
-
+        /*
+         * temp model class for retrieving the data from db
+         */
         public string sindex { get; set; }
         public string year { get; set; }
         public string month { get; set; }
@@ -71,6 +73,7 @@ namespace irimhe.Models
 
             return JsonString;
         }
+        /*Generating db table to json*/
         public Rootobject ConstructModel(List<SnowModel> snow)
         {
             Rootobject rootobject = new Rootobject();
@@ -116,7 +119,9 @@ namespace irimhe.Models
 
             return prop;
         }
-
+        /*
+         creating data to lat lon Geojson
+             */
         public Geometry gen_geometry(int count, List<SnowModel> snow)
         {
             Geometry geometry = new Geometry();
@@ -247,6 +252,28 @@ namespace irimhe.Models
 
             return JsonString;
         }
+        public string PullData_begin_end(tenday begindate, tenday enddate)
+        {
+            ConnDB conn = new ConnDB();
 
+            string sql = "select t_800_83.fid,t_800_83.sindex,t_800_83.year,t_800_83.month,t_800_83.num_of_month,t_800_83.WW_Max,"
+                + "t_800_83.TTT_Aver,t_800_83.TTT_Max ,t_800_83.Num_of_Tmax ,t_800_83.TTT_Min,t_800_80.Sum_of_RRR ,t_800_80.TxTxTxAver,"
+                + "t_800_83.txtxtx_max,t_800_83.num_of_tmin,t_800_83.Num_of_RRR ,t_800_83.Num_of_Tx_Max,t_800_83.TxTxTx_Min,station2.lat,station2.lon " +
+                "from t_800_83 inner join station2 on t_800_83.sindex = station2.sindex where t_800_83.year = " + begindate.year + " and t_800_83.month = " + begindate.month + " and t_800_83.num_of_month =" + begindate.num_of_month + " or t_800_83.year = " + enddate.year + " and t_800_83.month =" + enddate.month + " "
+                + " and t_800_83.num_of_month =" + enddate.num_of_month + " ";
+
+            NpgsqlCommand cmd = conn.RunCmdPG(sql);
+            NpgsqlDataAdapter da = new NpgsqlDataAdapter(cmd);
+
+            DataSet data = new DataSet();
+
+            da.Fill(data);
+            conn.ClosePG();
+
+            string JsonString = string.Empty;
+            JsonString = JsonConvert.SerializeObject(ConstructModel(DataTableToList(data.Tables[0])));
+
+            return JsonString;
+        }
     }
 }

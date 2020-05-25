@@ -256,7 +256,9 @@ namespace irimhe.Models
 
             return ret;
         }
-
+        /*
+         * reading datetime to and pushing it a model class
+         */
         public tenday DateTimeTotenDay(DateTime dates)
         {
             tenday ten = new tenday();
@@ -270,6 +272,9 @@ namespace irimhe.Models
 
             return ten;
         }
+        /*
+         * Pull every from t_800_80
+         */
         public string PullDataPGDB(tenday ten)
         {
 
@@ -298,6 +303,10 @@ namespace irimhe.Models
             return JsonString;
 
         }
+        /*
+         Pull's data with station and date time range
+             */
+
         public string PullDataPGDB_station(tenday ten, string station)
         {
             ConnDB conn = new ConnDB();
@@ -325,7 +334,9 @@ namespace irimhe.Models
             return JsonString;
 
         }
-
+        /*
+         Pull's database only station index
+             */
         public string PullData_station(string station)
         {
             ConnDB conn = new ConnDB();
@@ -348,6 +359,9 @@ namespace irimhe.Models
 
             return JsonString;
         }
+        /*
+         Pull's data from database wiht date ranges begindate,enddate
+             */
         public string PullData_begin_end(tenday begindate,tenday enddate)
         {
             ConnDB conn = new ConnDB();

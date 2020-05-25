@@ -47,7 +47,7 @@ namespace irimhe.Controllers
             var begindate = temp.DateTimeTotenDay(beginDateTime);
             var enddate = temp.DateTimeTotenDay(endDateTime);
 
-            temp.PullData_begin_end(begindate,enddate);
+            ret = temp.PullData_begin_end(begindate,enddate);
 
             return ret;
         }
