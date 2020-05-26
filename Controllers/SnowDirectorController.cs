@@ -9,9 +9,10 @@ namespace irimhe.Controllers
 {
     public class SnowDirectorController : Controller
     {
+        [HttpGet]
         public string Index()
         {
-            SnowModel snow = new SnowModel();
+            SnowDirectionModel snow = new SnowDirectionModel();
             return snow.PullDataPG();
         }
         [HttpPost]

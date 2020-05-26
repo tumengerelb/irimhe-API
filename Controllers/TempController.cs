@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -17,11 +18,12 @@ namespace irimhe.Controllers
 
             return temp.PullDataPG();
         }
-       
+        
         [HttpPost]
-        public string irimhe_temp(DateTime dateTime,string station)
-        {
+        public string irimhe_temp(string dateTime,string station)
+        {   
             TempModel temp = new TempModel();
+         
             string ret = "";
 
             if (string.IsNullOrEmpty(station))
@@ -38,7 +40,20 @@ namespace irimhe.Controllers
             return ret;
         }
         [HttpPost]
-        public string irimhe_temp_date(DateTime beginDateTime,DateTime endDateTime)
+        public string Temperature(string ttt_aver,string ttt_min,string ttt_max,string beginDateTime, string endDateTime)
+        {
+            TempModel temp = new TempModel();
+            string ret = "";
+
+            var begindate = temp.DateTimeTotenDay(beginDateTime);
+            var enddate = temp.DateTimeTotenDay(endDateTime);
+
+            ret = temp.only_pull_temp(ttt_aver,ttt_min,ttt_max,begindate, enddate);
+
+            return ret;
+        }
+        [HttpPost]
+        public string irimhe_temp_date(string beginDateTime,string endDateTime)
         {
             //
             TempModel temp = new TempModel();

@@ -92,8 +92,8 @@ namespace irimhe.Models
         public string PullDataPG()
         {
             ConnDB conn = new ConnDB();
-            string sql = "SELECT t_800_93.id, t_800_93.sindex, t_800_93.year, t_800_93.month, t_800_93.num_of_month, t_800_93.height_snow_west, t_800_93.density_snow_west, t_800_93.height_snow_north, t_800_93.density_snow_north, t_800_93.height_snow_east, t_800_93.density_snow_east, t_800_93.height_snow_south, t_800_93.density_snow_south, t_800_93.field_of_west, t_800_93.field_of_north, t_800_93.field_of_east, t_800_93.field_of_south, t_800_93.update_time " +
-                "station2.lat,station2.lon" +
+            string sql = "SELECT t_800_93.id, t_800_93.sindex, t_800_93.year, t_800_93.month, t_800_93.num_of_month, t_800_93.height_snow_west, t_800_93.density_snow_west, t_800_93.height_snow_north, t_800_93.density_snow_north, t_800_93.height_snow_east, t_800_93.density_snow_east, t_800_93.height_snow_south, t_800_93.density_snow_south, t_800_93.field_of_west, t_800_93.field_of_north, t_800_93.field_of_east, t_800_93.field_of_south, " +
+                "station2.lat,station2.lon " +
                 "from t_800_93 inner join station2 on t_800_93.sindex = station2.sindex";
             NpgsqlCommand cmd = conn.RunCmdPG(sql);
             NpgsqlDataAdapter da = new NpgsqlDataAdapter(cmd);

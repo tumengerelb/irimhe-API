@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using Npgsql;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.UI.WebControls;
 
 namespace irimhe.Models
 {
@@ -259,14 +260,15 @@ namespace irimhe.Models
         /*
          * reading datetime to and pushing it a model class
          */
-        public tenday DateTimeTotenDay(DateTime dates)
+        public tenday DateTimeTotenDay(string dates)
         {
+            string[] s = dates.Split('-');
             tenday ten = new tenday();
 
-            ten.year = dates.ToString("yyyy");
-            ten.month = dates.ToString("MM");
+            ten.year = s[0];
+            ten.month = s[1];
 
-            string day = dates.ToString("dd");
+            string day = s[2];
             int dayas = Int32.Parse(day);
             ten.num_of_month = num_of_calc(dayas).ToString();
 
@@ -362,6 +364,131 @@ namespace irimhe.Models
         /*
          Pull's data from database wiht date ranges begindate,enddate
              */
+        /*Get's data from db min max*/
+        public string get_max_temp()
+        {
+            ConnDB conn = new ConnDB();
+
+            string sql = "select min(ttt_max) from t_800_80";
+
+            NpgsqlCommand cmd = conn.RunCmdPG(sql);
+            NpgsqlDataAdapter da = new NpgsqlDataAdapter(cmd);
+            DataSet data = new DataSet();
+
+            da.Fill(data);
+            string tmax = Convert.ToString(data.Tables[0].Rows[0]);
+            return tmax;
+        }
+        public string get_min_temp()
+        {
+            ConnDB conn = new ConnDB();
+
+            string sql = "select min(ttt_min) from t_800_80";
+
+            NpgsqlCommand cmd = conn.RunCmdPG(sql);
+            NpgsqlDataAdapter da = new NpgsqlDataAdapter(cmd);
+            DataSet data = new DataSet();
+
+            da.Fill(data);
+            string tmin = Convert.ToString(data.Tables[0].Rows[0]);
+            return tmin;
+        }
+        public  string only_pull_temp(string ttt_aver,string ttt_max,string ttt_min,tenday startdate,tenday enddate)
+        {
+            ConnDB conn = new ConnDB();
+            string tmax,tmin = "";
+            /*
+            if(string.IsNullOrWhiteSpace(ttt_aver) || string.IsNullOrWhiteSpace(ttt_max) || string.IsNullOrWhiteSpace(ttt_min) )
+            {
+
+            }*/
+            if(string.IsNullOrWhiteSpace(ttt_max))
+            {
+                tmax = get_max_temp();
+            }
+            else
+            {
+                tmax = ttt_max;
+            }
+            if(string.IsNullOrWhiteSpace(ttt_min))
+            {
+                tmin = get_min_temp();
+            }
+            else
+            {
+                tmin = ttt_min;
+            }
+            if(string.IsNullOrWhiteSpace(ttt_aver))
+            {
+                string sql = "select t_800_80.sindex,t_800_80.year,t_800_80.month,t_800_80.num_of_month,t_800_80.ttt_aver,t_800_80.ttt_max,t_800_80.ttt_min,t_800_80.num_of_tmin,t_800_80.num_of_tmax,station2.lat,station2.lon from t_800_80 inner join station2 on t_800_80.sindex = station2.sindex " +
+                    " where t_800_80.year between " + startdate.year + " and " + enddate.year + " and t_800_80.month between " + startdate.month + " and " + enddate.month + " " +
+                    "and t_800_80.num_of_month between " + startdate.num_of_month + " and " + enddate.num_of_month + " and ttt_min >= "+tmin+" and ttt_max <="+tmax+"";
+            }
+            else
+            {
+                string sql = "select t_800_80.sindex,t_800_80.year,t_800_80.month,t_800_80.num_of_month,t_800_80.ttt_aver,t_800_80.ttt_max,t_800_80.ttt_min,t_800_80.num_of_tmin,t_800_80.num_of_tmax,station2.lat,station2.lon from t_800_80 inner join station2 on t_800_80.sindex = station2.sindex " +
+                    " where t_800_80.year between " + startdate.year + " and " + enddate.year + " and t_800_80.month between " + startdate.month + " and " + enddate.month + " " +
+                    "and t_800_80.num_of_month between " + startdate.num_of_month + " and " + enddate.num_of_month + " and ttt_min >= " + tmin + " and ttt_max <=" + tmax + " and ttt_aver >="+ttt_aver+"";
+
+            }
+
+            /*            string sql = "select t_800_80.sindex,t_800_80.year,t_800_80.month,t_800_80.num_of_month,t_800_80.ttt_aver,t_800_80.ttt_max,t_800_80.ttt_min,t_800_80.num_of_tmin,t_800_80.num_of_tmax,station2.lat,station2.lon from t_800_80 inner join station2 on t_800_80.sindex = station2.sindex " +
+                                " where t_800_80.year between "+startdate.year+" and "+enddate.year+" and t_800_80.month between "+startdate.month+" and "+enddate.month+" " +
+                                "and t_800_80.num_of_month between "+startdate.num_of_month+" and "+enddate.num_of_month+" ";
+              */
+            NpgsqlCommand cmd = conn.RunCmdPG(sql);
+            NpgsqlDataAdapter da = new NpgsqlDataAdapter(cmd);
+
+            DataSet data = new DataSet();
+
+            da.Fill(data);
+            conn.ClosePG();
+
+            string JsonString = string.Empty;
+            JsonString = JsonConvert.SerializeObject(TempTableToList(data.Tables[0]));
+
+            return JsonString;
+
+        }
+        public class tempclass
+        {
+            public int sindex { get; set; }
+            public string year { get; set; }
+            public string month { get; set; }
+            public string num_of_month { get; set; }
+            public string lat { get; set; }
+            public string lon { get; set; }
+            public string ttt_aver { get; set;}
+            public string ttt_min { get; set; }
+            public string ttt_max { get; set; }
+            public string num_of_tmax { get; set; }
+            public string num_of_tmin { get; set; }
+            
+        }
+
+        public List<tempclass> TempTableToList(DataTable table)
+        {
+            //table to List object
+            tempclass temp = new tempclass();
+
+            var convertedList = (from rw in table.AsEnumerable()
+                                 select new tempclass()
+                                 {
+                                     sindex = Convert.ToInt32(rw["sindex"]),
+                                     year = Convert.ToString(rw["year"]),
+                                     month = Convert.ToString(rw["month"]),
+                                     num_of_month = Convert.ToString(rw["num_of_month"]),
+                                     lat = Convert.ToString(rw["lat"]),
+                                     lon = Convert.ToString(rw["lon"]),
+                                     ttt_aver = Convert.ToString(rw["ttt_aver"]),
+                                     ttt_max = Convert.ToString(rw["ttt_max"]),                                     
+                                     ttt_min = Convert.ToString(rw["ttt_min"]),
+                                     num_of_tmin = Convert.ToString(rw["num_of_tmin"]),
+                                     num_of_tmax = Convert.ToString(rw["num_of_tmin"]),
+                                 }).ToList();
+
+            return convertedList;
+        }
         public string PullData_begin_end(tenday begindate,tenday enddate)
         {
             ConnDB conn = new ConnDB();
