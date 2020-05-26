@@ -269,8 +269,10 @@ namespace irimhe.Models
             ten.month = s[1];
 
             string day = s[2];
-            int dayas = Int32.Parse(day);
-            ten.num_of_month = num_of_calc(dayas).ToString();
+            //int dayas = Int32.Parse(day);
+            //ten.num_of_month = num_of_calc(dayas).ToString();
+
+            ten.num_of_month = day;
 
             return ten;
         }
@@ -456,10 +458,8 @@ namespace irimhe.Models
         }
         public class tempclass
         {
-            public int sindex { get; set; }
-            public string year { get; set; }
-            public string month { get; set; }
-            public string num_of_month { get; set; }
+            public int sindex { get; set; }            
+            public string date { get; set; }
             public string lat { get; set; }
             public string lon { get; set; }
             public string ttt_aver { get; set;}
@@ -478,10 +478,8 @@ namespace irimhe.Models
             var convertedList = (from rw in table.AsEnumerable()
                                  select new tempclass()
                                  {
-                                     sindex = Convert.ToInt32(rw["sindex"]),
-                                     year = Convert.ToString(rw["year"]),
-                                     month = Convert.ToString(rw["month"]),
-                                     num_of_month = Convert.ToString(rw["num_of_month"]),
+                                     sindex = Convert.ToInt32(rw["sindex"]),                                     
+                                     date = Convert.ToString(rw["year"])+"-"+ Convert.ToString(rw["month"])+"-"+ Convert.ToString(rw["num_of_month"]),
                                      lat = Convert.ToString(rw["lat"]),
                                      lon = Convert.ToString(rw["lon"]),
                                      ttt_aver = Convert.ToString(rw["ttt_aver"]),
