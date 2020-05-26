@@ -369,15 +369,17 @@ namespace irimhe.Models
         {
             ConnDB conn = new ConnDB();
 
-            string sql = "select min(ttt_max) from t_800_80";
+            string sql = "select max(ttt_max) from t_800_80";
 
             NpgsqlCommand cmd = conn.RunCmdPG(sql);
-            NpgsqlDataAdapter da = new NpgsqlDataAdapter(cmd);
-            DataSet data = new DataSet();
+            NpgsqlDataReader reader = cmd.ExecuteReader();
+            string t_max="";
 
-            da.Fill(data);
-            string tmax = Convert.ToString(data.Tables[0].Rows[0]);
-            return tmax;
+            while(reader.Read())
+            {
+                 t_max = Convert.ToString(reader["max"]);
+            }            
+            return t_max;
         }
         public string get_min_temp()
         {
@@ -386,17 +388,19 @@ namespace irimhe.Models
             string sql = "select min(ttt_min) from t_800_80";
 
             NpgsqlCommand cmd = conn.RunCmdPG(sql);
-            NpgsqlDataAdapter da = new NpgsqlDataAdapter(cmd);
-            DataSet data = new DataSet();
+            NpgsqlDataReader reader = cmd.ExecuteReader();
+            string t_min = "";
 
-            da.Fill(data);
-            string tmin = Convert.ToString(data.Tables[0].Rows[0]);
-            return tmin;
+            while (reader.Read())
+            {
+                t_min = Convert.ToString(reader["min"]);
+            }
+            return t_min;
         }
         public  string only_pull_temp(string ttt_aver,string ttt_max,string ttt_min,tenday startdate,tenday enddate)
         {
             ConnDB conn = new ConnDB();
-            string tmax,tmin = "";
+            string tmax,tmin,sql = "";
             /*
             if(string.IsNullOrWhiteSpace(ttt_aver) || string.IsNullOrWhiteSpace(ttt_max) || string.IsNullOrWhiteSpace(ttt_min) )
             {
@@ -420,13 +424,13 @@ namespace irimhe.Models
             }
             if(string.IsNullOrWhiteSpace(ttt_aver))
             {
-                string sql = "select t_800_80.sindex,t_800_80.year,t_800_80.month,t_800_80.num_of_month,t_800_80.ttt_aver,t_800_80.ttt_max,t_800_80.ttt_min,t_800_80.num_of_tmin,t_800_80.num_of_tmax,station2.lat,station2.lon from t_800_80 inner join station2 on t_800_80.sindex = station2.sindex " +
+                sql = "select t_800_80.sindex,t_800_80.year,t_800_80.month,t_800_80.num_of_month,t_800_80.ttt_aver,t_800_80.ttt_max,t_800_80.ttt_min,t_800_80.num_of_tmin,t_800_80.num_of_tmax,station2.lat,station2.lon from t_800_80 inner join station2 on t_800_80.sindex = station2.sindex " +
                     " where t_800_80.year between " + startdate.year + " and " + enddate.year + " and t_800_80.month between " + startdate.month + " and " + enddate.month + " " +
                     "and t_800_80.num_of_month between " + startdate.num_of_month + " and " + enddate.num_of_month + " and ttt_min >= "+tmin+" and ttt_max <="+tmax+"";
             }
             else
             {
-                string sql = "select t_800_80.sindex,t_800_80.year,t_800_80.month,t_800_80.num_of_month,t_800_80.ttt_aver,t_800_80.ttt_max,t_800_80.ttt_min,t_800_80.num_of_tmin,t_800_80.num_of_tmax,station2.lat,station2.lon from t_800_80 inner join station2 on t_800_80.sindex = station2.sindex " +
+                sql = "select t_800_80.sindex,t_800_80.year,t_800_80.month,t_800_80.num_of_month,t_800_80.ttt_aver,t_800_80.ttt_max,t_800_80.ttt_min,t_800_80.num_of_tmin,t_800_80.num_of_tmax,station2.lat,station2.lon from t_800_80 inner join station2 on t_800_80.sindex = station2.sindex " +
                     " where t_800_80.year between " + startdate.year + " and " + enddate.year + " and t_800_80.month between " + startdate.month + " and " + enddate.month + " " +
                     "and t_800_80.num_of_month between " + startdate.num_of_month + " and " + enddate.num_of_month + " and ttt_min >= " + tmin + " and ttt_max <=" + tmax + " and ttt_aver >="+ttt_aver+"";
 
