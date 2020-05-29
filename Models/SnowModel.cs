@@ -167,6 +167,147 @@ namespace irimhe.Models
             public string month { get; set; }
             public string num_of_month { get; set; }
         }
+
+        public tenday DateTimeTenDay(string dates)
+        {
+            string[] s = dates.Split('-');
+            tenday ten = new tenday();
+
+            ten.year = s[0];
+            ten.month = s[1];
+
+            string day = s[2];
+            //int dayas = Int32.Parse(day);
+            //ten.num_of_month = num_of_calc(dayas).ToString();
+
+            ten.num_of_month = day;
+
+            return ten;
+        }
+        public string get_height_of_snow()
+        {
+            ConnDB conn = new ConnDB();
+
+            string sql = "select max(height_of_snow) from t_800_83";
+
+            NpgsqlCommand cmd = conn.RunCmdPG(sql);
+            NpgsqlDataReader reader = cmd.ExecuteReader();
+            string t_min = "";
+
+            while (reader.Read())
+            {
+                t_min = Convert.ToString(reader["max"]);
+            }
+            conn.ClosePG();
+            return t_min;
+        }
+        public string get_density_of_snow()
+        {
+            ConnDB conn = new ConnDB();
+
+            string sql = "select max(density_of_snow) from t_800_83";
+
+            NpgsqlCommand cmd = conn.RunCmdPG(sql);
+            NpgsqlDataReader reader = cmd.ExecuteReader();
+            string t_min = "";
+
+            while (reader.Read())
+            {
+                t_min = Convert.ToString(reader["max"]);
+            }
+            conn.ClosePG();
+            return t_min;
+        }
+        public string only_pull_snow(string height_of_snow,string density_of_snow,tenday startdate,tenday enddate)
+        {
+            ConnDB conn = new ConnDB();
+
+            string sql,snow_h_max,snow_d_max = "";
+
+            if(string.IsNullOrWhiteSpace(height_of_snow))
+            {
+                snow_h_max = get_height_of_snow();
+            }
+            else
+            {
+                snow_h_max = height_of_snow;
+            }
+            if(string.IsNullOrWhiteSpace(density_of_snow))
+            {
+                snow_d_max = get_density_of_snow();
+            }
+            else
+            {
+                snow_d_max = density_of_snow;
+            }
+            sql = "select t_800_83.sindex,t_800_83.year,t_800_83.month,t_800_83.num_of_month,t_800_83.height_of_snow,t_800_83.density_of_snow,t_800_83.field_of_snow,station2.lat,station2.lon from t_800_83 inner join station2 on t_800_83.sindex = station2.sindex " +
+                        " where t_800_83.year between " + startdate.year + " and " + enddate.year + " and t_800_83.month between " + startdate.month + " and " + enddate.month + " " +
+                        "and t_800_83.num_of_month between " + startdate.num_of_month + " and " + enddate.num_of_month + " and height_of_snow <= " + snow_h_max + " and density_of_snow <=" + snow_d_max + "";
+            
+            NpgsqlCommand cmd = conn.RunCmdPG(sql);
+            NpgsqlDataAdapter da = new NpgsqlDataAdapter(cmd);
+
+            DataSet data = new DataSet();
+
+            da.Fill(data);
+            conn.ClosePG();
+
+            string JsonString = string.Empty;
+            JsonString = JsonConvert.SerializeObject(SnowTableToList(data.Tables[0]));
+
+            return JsonString;
+        }
+        public List<snowclass> SnowTableToList(DataTable table)
+        {
+            //table to List object
+            snowclass temp = new snowclass();
+
+            var convertedList = (from rw in table.AsEnumerable()
+                                 select new snowclass()
+                                 {
+                                     sindex = Convert.ToInt32(rw["sindex"]),
+                                     date = Convert.ToString(rw["year"]) + "-" + Convert.ToString(rw["month"]) + "-" + Convert.ToString(rw["num_of_month"]),
+                                     lat = strtofloat(Convert.ToString(rw["lat"])),
+                                     lon = strtofloat(Convert.ToString(rw["lon"])),
+                                     height_of_snow = Convert.ToInt32(rw["height_of_snow"]),
+                                     density_of_snow = strtofloat(Convert.ToString(rw["density_of_snow"])),
+                                     field_of_snow = Convert.ToInt32(rw["field_of_snow"])
+                                 }).ToList();
+
+            return convertedList;
+        }
+        public decimal? strtoint(string s)
+        {
+            decimal? ret = 0;
+            if (string.IsNullOrWhiteSpace(s))
+            {
+                ret = null;
+            }
+            else
+            {
+                ret = (decimal.Parse(s, System.Globalization.NumberStyles.AllowParentheses |
+                System.Globalization.NumberStyles.AllowLeadingWhite |
+                System.Globalization.NumberStyles.AllowTrailingWhite |
+                System.Globalization.NumberStyles.AllowThousands |
+                System.Globalization.NumberStyles.AllowDecimalPoint |
+                System.Globalization.NumberStyles.AllowLeadingSign));
+            }
+            return ret;
+        }
+        public float strtofloat(string s)
+        {
+            return float.Parse(s);
+        }
+        public class snowclass
+        {
+            public int sindex { get; set; }
+            public string date { get; set; }
+            public float lat { get; set; }
+            public float lon { get; set; }
+            public int height_of_snow { get; set; }
+            public float density_of_snow { get; set; }
+            public int field_of_snow { get; set; }
+        }
         public int num_of_calc(int calc)
         {
             int ret = 0;

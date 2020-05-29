@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using irimhe.Models;
+using Microsoft.SqlServer.Server;
 
 namespace irimhe.Controllers
 {
@@ -51,6 +52,50 @@ namespace irimhe.Controllers
             ret = temp.only_pull_temp(ttt_aver,ttt_max,ttt_min,begindate, enddate);
 
             return ret;
+        }
+        [HttpPost]
+        public string soil(string tx_aver, string tx_max, string tx_min, string beginDateTime, string endDateTime)
+        {
+            TempModel temp = new TempModel();
+
+            string ret = "";
+
+            var begindate = temp.DateTimeTotenDay(beginDateTime);
+            var enddate = temp.DateTimeTotenDay(endDateTime);
+
+            ret = temp.only_pull_soil(tx_aver,tx_max,tx_min,begindate, enddate);
+
+            return ret;
+        }
+        [HttpPost]
+        public string wind(string windmax,string beginDateTime, string endDateTime)
+        {
+            TempModel temp = new TempModel();
+
+            string ret = "";
+
+            var begindate = temp.DateTimeTotenDay(beginDateTime);
+            var enddate = temp.DateTimeTotenDay(endDateTime);
+
+            ret = temp.only_pull_wind(windmax, begindate, enddate);
+
+            return ret;
+
+        }
+        [HttpPost]
+        public string percipitation(string sum_rrr_max, string beginDateTime, string endDateTime)
+        {
+            TempModel temp = new TempModel();
+
+            string ret = "";
+
+            var begindate = temp.DateTimeTotenDay(beginDateTime);
+            var enddate = temp.DateTimeTotenDay(endDateTime);
+
+            ret = temp.only_pull_percipitation(sum_rrr_max, begindate, enddate);
+
+            return ret;
+
         }
         [HttpPost]
         public string irimhe_temp_date(string beginDateTime,string endDateTime)

@@ -36,6 +36,20 @@ namespace irimhe.Controllers
 
             return ret;
         }
+
+        [HttpPost]
+        public string snow(string height_of_snow,string density_of_snow,string beginDateTime,string endDateTime)
+        {
+            SnowModel snow = new SnowModel();
+            string ret = "";
+
+            var begindate = snow.DateTimeTenDay(beginDateTime);
+            var enddate = snow.DateTimeTenDay(endDateTime);
+
+            ret = snow.only_pull_snow(height_of_snow,density_of_snow,begindate,enddate);
+
+            return ret;
+        }
         [HttpPost]
         public string irimhe_snow_date(DateTime beginDateTime, DateTime endDateTime)
         {
