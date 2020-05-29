@@ -167,7 +167,24 @@ namespace irimhe.Models
             public string month { get; set; }
             public string num_of_month { get; set; }
         }
+        public string retDate(string s)
+        {
+            string ret = "";
 
+            if (s == "1")
+            {
+                ret = "1";
+            }
+            if (s == "11")
+            {
+                ret = "2";
+            }
+            if (s == "21")
+            {
+                ret = "3";
+            }
+            return ret;
+        }
         public tenday DateTimeTenDay(string dates)
         {
             string[] s = dates.Split('-');
@@ -176,7 +193,7 @@ namespace irimhe.Models
             ten.year = s[0];
             ten.month = s[1];
 
-            string day = s[2];
+            string day = retDate(s[2]);
             //int dayas = Int32.Parse(day);
             //ten.num_of_month = num_of_calc(dayas).ToString();
 
@@ -257,6 +274,23 @@ namespace irimhe.Models
 
             return JsonString;
         }
+        public string chekdate(string s)
+        {
+            string ret = "";
+            if (s == "1")
+            {
+                ret = "1";
+            }
+            if (s == "2")
+            {
+                ret = "11";
+            }
+            if (s == "3")
+            {
+                ret = "21";
+            }
+            return ret;
+        }
         public List<snowclass> SnowTableToList(DataTable table)
         {
             //table to List object
@@ -266,7 +300,7 @@ namespace irimhe.Models
                                  select new snowclass()
                                  {
                                      sindex = Convert.ToInt32(rw["sindex"]),
-                                     date = Convert.ToString(rw["year"]) + "-" + Convert.ToString(rw["month"]) + "-" + Convert.ToString(rw["num_of_month"]),
+                                     date = Convert.ToString(rw["year"]) + "-" + Convert.ToString(rw["month"]) + "-" + chekdate(Convert.ToString(rw["num_of_month"])),
                                      lat = strtofloat(Convert.ToString(rw["lat"])),
                                      lon = strtofloat(Convert.ToString(rw["lon"])),
                                      height_of_snow = Convert.ToInt32(rw["height_of_snow"]),

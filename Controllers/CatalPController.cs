@@ -17,7 +17,8 @@ namespace irimhe.Controllers
         {
             CatalPModel catal = new CatalPModel();
 
-            return catal.GetCatalP();
+            //return catal.GetCatalP();
+            return "Ok";
         }
         [HttpPost]
         public string catal_index(string station)
@@ -25,8 +26,8 @@ namespace irimhe.Controllers
             CatalPModel catal = new CatalPModel();
 
             int req = Int32.Parse(station);
-
-            return catal.GetCatalP_station(req);
+            return "Ok";
+            //return catal.GetCatalP_station(req);
         }
     }
 }

@@ -9,6 +9,7 @@ using System.Linq;
 using System.Web.UI.WebControls;
 using System.Globalization;
 using System.Dynamic;
+using Microsoft.SqlServer.Server;
 
 namespace irimhe.Models
 {
@@ -262,6 +263,24 @@ namespace irimhe.Models
         /*
          * reading datetime to and pushing it a model class
          */
+        public string retDate(string s)
+        {
+            string ret = "";
+
+            if (s =="1")
+            {
+                ret = "1";
+            }
+            if(s =="11")
+            {
+                ret = "2";
+            }
+            if(s =="21")
+            {
+                ret = "3";
+            }
+                return ret;
+        }
         public tenday DateTimeTotenDay(string dates)
         {
             string[] s = dates.Split('-');
@@ -270,7 +289,8 @@ namespace irimhe.Models
             ten.year = s[0];
             ten.month = s[1];
 
-            string day = s[2];
+            string day = retDate(s[2]);
+            
             //int dayas = Int32.Parse(day);
             //ten.num_of_month = num_of_calc(dayas).ToString();
 
@@ -497,7 +517,7 @@ namespace irimhe.Models
                                  select new soilclass()
                                  {
                                      sindex = Convert.ToInt32(rw["sindex"]),
-                                     date = Convert.ToString(rw["year"]) + "-" + Convert.ToString(rw["month"]) + "-" + Convert.ToString(rw["num_of_month"]),
+                                     date = Convert.ToString(rw["year"]) + "-" + Convert.ToString(rw["month"]) + "-" + chekdate(Convert.ToString(rw["num_of_month"])),
                                      lat = strtofloat(Convert.ToString(rw["lat"])),
                                      lon = strtofloat(Convert.ToString(rw["lon"])),
                                      txtxtxaver = strtoint(Convert.ToString(rw["txtxtxaver"])),
@@ -520,7 +540,7 @@ namespace irimhe.Models
         {
             ConnDB conn = new ConnDB();
 
-            string sql = "select max(ww_Max) from t_800_80";
+            string sql = "select max(ww_max) from t_800_80";
 
             NpgsqlCommand cmd = conn.RunCmdPG(sql);
             NpgsqlDataReader reader = cmd.ExecuteReader();
@@ -575,7 +595,7 @@ namespace irimhe.Models
                                  select new windclass()
                                  {
                                      sindex = Convert.ToInt32(rw["sindex"]),
-                                     date = Convert.ToString(rw["year"]) + "-" + Convert.ToString(rw["month"]) + "-" + Convert.ToString(rw["num_of_month"]),
+                                     date = Convert.ToString(rw["year"]) + "-" + Convert.ToString(rw["month"]) + "-" + chekdate(Convert.ToString(rw["num_of_month"])),
                                      lat = strtofloat(Convert.ToString(rw["lat"])),
                                      lon = strtofloat(Convert.ToString(rw["lon"])),
                                      wind_max = strtoint(Convert.ToString(rw["ww_max"]))
@@ -652,7 +672,7 @@ namespace irimhe.Models
                                  select new precipitationclass()
                                  {
                                      sindex = Convert.ToInt32(rw["sindex"]),
-                                     date = Convert.ToString(rw["year"]) + "-" + Convert.ToString(rw["month"]) + "-" + Convert.ToString(rw["num_of_month"]),
+                                     date = Convert.ToString(rw["year"]) + "-" + Convert.ToString(rw["month"]) + "-" + chekdate(Convert.ToString(rw["num_of_month"])),
                                      lat = strtofloat(Convert.ToString(rw["lat"])),
                                      lon = strtofloat(Convert.ToString(rw["lon"])),
                                      sum_rrr = strtoint(Convert.ToString(rw["sum_of_rrr"]))
@@ -661,7 +681,23 @@ namespace irimhe.Models
 
             return convertedList;
         }
-
+        public string chekdate(string s)
+        {
+            string ret = "";
+            if(s =="1")
+            {
+                ret = "1";
+            }
+            if(s =="2")
+            {
+                ret = "11";
+            }
+            if(s =="3")
+            {
+                ret = "21";
+            }
+            return ret;
+        }
         public string only_pull_temp(string ttt_aver,string ttt_max,string ttt_min,tenday startdate,tenday enddate)
         {
             ConnDB conn = new ConnDB();

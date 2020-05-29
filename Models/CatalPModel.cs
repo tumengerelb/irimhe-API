@@ -5,7 +5,7 @@ using Npgsql;
 using System.Data;
 namespace irimhe.Models
 {
-    public class CatalTModel
+    public class CatalPModel
     {
         public string GetCatalT()
         {
