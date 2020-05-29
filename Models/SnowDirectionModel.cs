@@ -348,5 +348,171 @@ namespace irimhe.Models
             return JsonString;
         }
 
+        public class blizzardclass
+        {
+            public int sid { get; set; }
+            public int sindex { get; set; }
+            public string date { get; set; }
+            public int? height_snow_west { get; set; }
+            public float? density_snow_west { get; set; }
+            public int? height_snow_north { get; set; }
+            public float? density_snow_north { get; set; }
+            public int? height_snow_east { get; set; }
+            public float? density_snow_east { get; set; }
+            public int? height_snow_south { get; set; }
+            public float? density_snow_south { get; set; }
+            public int? field_of_west { get; set; }
+            public int? field_of_north { get; set; }
+            public int? field_of_east { get; set; }
+            public int? field_of_south { get; set; }
+            public float? lat { get; set; }
+            public float? lon { get; set; }
+        }
+        public string retDate(string s)
+        {
+            string ret = "";
+
+            if (s == "1")
+            {
+                ret = "1";
+            }
+            if (s == "11")
+            {
+                ret = "2";
+            }
+            if (s == "21")
+            {
+                ret = "3";
+            }
+            return ret;
+        }
+        public tenday DateTimeTenDay(string dates)
+        {
+            string[] s = dates.Split('-');
+            tenday ten = new tenday();
+
+            ten.year = s[0];
+            ten.month = s[1];
+
+            string day = retDate(s[2]);
+            //int dayas = Int32.Parse(day);
+            //ten.num_of_month = num_of_calc(dayas).ToString();
+
+            ten.num_of_month = day;
+
+            return ten;
+        }
+        public string only_pull_snow( tenday startdate, tenday enddate)
+        {
+            ConnDB conn = new ConnDB();
+
+            string sql = " ";
+
+            sql = "select t_800_93.*,station2.lat,station2.lon from t_800_93 inner join station2 on t_800_93.sindex = station2.sindex " +
+                        " where t_800_93.year between " + startdate.year + " and " + enddate.year + " and t_800_93.month between " + startdate.month + " and " + enddate.month + " " +
+                        "and t_800_93.num_of_month between " + startdate.num_of_month + " and " + enddate.num_of_month + " ";
+
+            NpgsqlCommand cmd = conn.RunCmdPG(sql);
+            NpgsqlDataAdapter da = new NpgsqlDataAdapter(cmd);
+
+            DataSet data = new DataSet();
+
+            da.Fill(data);
+            conn.ClosePG();
+
+            string JsonString = string.Empty;
+            JsonString = JsonConvert.SerializeObject(SnowDirectionTableToList(data.Tables[0]));
+
+            return JsonString;
+        }
+        public List<blizzardclass> SnowDirectionTableToList(DataTable table)
+        {
+            //table to List object
+            blizzardclass temp = new blizzardclass();
+
+            var convertedList = (from rw in table.AsEnumerable()
+                                 select new blizzardclass()
+                                 {
+                                     sindex = Convert.ToInt32(rw["sindex"]),
+                                     date = Convert.ToString(rw["year"]) + "-" + Convert.ToString(rw["month"]) + "-" + chekdate(Convert.ToString(rw["num_of_month"])),
+                                     lat = strtofloat(Convert.ToString(rw["lat"])),
+                                     lon = strtofloat(Convert.ToString(rw["lon"])),
+                                     height_snow_west = strtodec(Convert.ToString(rw["height_snow_west"])),
+                                     density_snow_west = strtofloat(Convert.ToString(rw["density_snow_west"])),
+                                     height_snow_east = strtodec(Convert.ToString(rw["height_snow_east"])),
+                                     density_snow_east = strtofloat(Convert.ToString(rw["density_snow_east"])),
+                                     height_snow_north = strtodec(Convert.ToString(rw["height_snow_north"])),
+                                     density_snow_north = strtofloat(Convert.ToString(rw["density_snow_north"])),
+                                     height_snow_south = strtodec(Convert.ToString(rw["height_snow_south"])),
+                                     density_snow_south = strtofloat(Convert.ToString(rw["density_snow_south"])),
+                                     field_of_east = strtodec(Convert.ToString(rw["field_of_east"])),
+                                     field_of_north = strtodec(Convert.ToString(rw["field_of_north"])),
+                                     field_of_south = strtodec(Convert.ToString(rw["field_of_south"])),
+                                     field_of_west = strtodec(Convert.ToString(rw["field_of_west"]))
+                                 }).ToList();
+
+            return convertedList;
+        }
+        public int? strtodec(string s)
+        {
+            int? ret = 0;
+            if(string.IsNullOrWhiteSpace(s))
+            {
+                ret = null;
+            }
+            else
+            {
+                ret = Int32.Parse(s);
+            }
+            return ret;
+        }
+        public string chekdate(string s)
+        {
+            string ret = "";
+            if (s == "1")
+            {
+                ret = "1";
+            }
+            if (s == "2")
+            {
+                ret = "11";
+            }
+            if (s == "3")
+            {
+                ret = "21";
+            }
+            return ret;
+        }
+        public decimal? strtoint(string s)
+        {
+            decimal? ret = 0;
+            if (string.IsNullOrWhiteSpace(s))
+            {
+                ret = null;
+            }
+            else
+            {
+                ret = (decimal.Parse(s, System.Globalization.NumberStyles.AllowParentheses |
+                System.Globalization.NumberStyles.AllowLeadingWhite |
+                System.Globalization.NumberStyles.AllowTrailingWhite |
+                System.Globalization.NumberStyles.AllowThousands |
+                System.Globalization.NumberStyles.AllowDecimalPoint |
+                System.Globalization.NumberStyles.AllowLeadingSign));
+            }
+            return ret;
+        }
+        public float? strtofloat(string s)
+        {
+            float? ret = 0;
+            if(string.IsNullOrWhiteSpace(s))
+            {
+                ret = null;
+            }
+            else
+            {
+                ret = float.Parse(s);
+            }
+            return ret;
+        }
     }
 }

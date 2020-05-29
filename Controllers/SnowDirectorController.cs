@@ -15,6 +15,20 @@ namespace irimhe.Controllers
             SnowDirectionModel snow = new SnowDirectionModel();
             return snow.PullDataPG();
         }
+
+        [HttpPost]
+        public string blizzard(string beginDateTime,string endDateTime)
+        {
+            SnowDirectionModel snow = new SnowDirectionModel();
+            string ret = "";
+
+            var begindate = snow.DateTimeTenDay(beginDateTime);
+            var enddate = snow.DateTimeTenDay(endDateTime);
+
+            ret = snow.only_pull_snow(begindate, enddate);
+
+            return ret;
+        }
         [HttpPost]
         public string irimhe_snow(DateTime dateTime, string station)
         {

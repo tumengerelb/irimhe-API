@@ -29,5 +29,12 @@ namespace irimhe.Controllers
             return "Ok";
             //return catal.GetCatalP_station(req);
         }
+        [HttpPost]
+        public string longtermperc(string station)
+        {
+            CatalPModel catalp = new CatalPModel();
+
+            return catalp.only_perc(station);
+        }
     }
 }
