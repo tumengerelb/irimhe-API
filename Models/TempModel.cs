@@ -266,7 +266,10 @@ namespace irimhe.Models
         public string retDate(string s)
         {
             string ret = "";
-
+            if(s =="01")
+            {
+                ret = "1";
+            }
             if (s =="1")
             {
                 ret = "1";
@@ -684,9 +687,14 @@ namespace irimhe.Models
         public string chekdate(string s)
         {
             string ret = "";
+
+            if( s == "01" )
+            {
+                ret = "01";
+            }
             if(s =="1")
             {
-                ret = "1";
+                ret = "01";
             }
             if(s =="2")
             {
@@ -778,7 +786,7 @@ namespace irimhe.Models
                                  select new tempclass()
                                  {
                                      sindex = Convert.ToInt32(rw["sindex"]),                                     
-                                     date = Convert.ToString(rw["year"])+"-"+ Convert.ToString(rw["month"])+"-"+ Convert.ToString(rw["num_of_month"]),
+                                     date = Convert.ToString(rw["year"])+"-"+ Convert.ToString(rw["month"])+"-"+ chekdate(Convert.ToString(rw["num_of_month"])),
                                      lat = strtofloat(Convert.ToString(rw["lat"])),
                                      lon = strtofloat(Convert.ToString(rw["lon"])),
                                      ttt_aver = strtoint(Convert.ToString(rw["ttt_aver"])),

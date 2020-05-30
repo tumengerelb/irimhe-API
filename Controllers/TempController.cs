@@ -40,8 +40,13 @@ namespace irimhe.Controllers
 
             return ret;
         }
+        [HttpGet]
+        public string Temperature(string ttt_aver, string ttt_min, string ttt_max, string beginDateTime, string endDateTime)
+        {
+            return Temperature2(ttt_aver, ttt_min, ttt_max, beginDateTime, endDateTime);
+        }
         [HttpPost]
-        public string Temperature(string ttt_aver,string ttt_min,string ttt_max,string beginDateTime, string endDateTime)
+        public string Temperature2(string ttt_aver,string ttt_min,string ttt_max,string beginDateTime, string endDateTime)
         {
             TempModel temp = new TempModel();
             string ret = "";

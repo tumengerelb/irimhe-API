@@ -171,9 +171,13 @@ namespace irimhe.Models
         {
             string ret = "";
 
+            if( s =="01" )
+            {
+                ret = "01";
+            }
             if (s == "1")
             {
-                ret = "1";
+                ret = "01";
             }
             if (s == "11")
             {

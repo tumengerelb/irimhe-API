@@ -371,7 +371,10 @@ namespace irimhe.Models
         public string retDate(string s)
         {
             string ret = "";
-
+            if (s == "01")
+            {
+                ret = "1";
+            }
             if (s == "1")
             {
                 ret = "1";
@@ -469,9 +472,13 @@ namespace irimhe.Models
         public string chekdate(string s)
         {
             string ret = "";
+            if( s=="01")
+            {
+                ret = "01";
+            }
             if (s == "1")
             {
-                ret = "1";
+                ret = "01";
             }
             if (s == "2")
             {

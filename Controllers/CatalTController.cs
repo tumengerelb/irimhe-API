@@ -29,7 +29,7 @@ namespace irimhe.Controllers
             return "Ok";
             //return catal.GetCatal_station(req);
         }
-        [HttpPost]
+        [HttpGet]
         public string longtermtemp(string station)
         {
             CatalTModel catal = new CatalTModel();
