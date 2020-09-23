@@ -486,5 +486,42 @@ namespace irimhe.Models
 
             return JsonString;
         }
+
+        public class garig
+        {
+            public string date { get; set; }
+        }
+        public string udur()
+        {
+            ConnDB conn = new ConnDB();
+
+            DataSet data = new DataSet();
+            string sql = "select distinct t_800_83.month , t_800_83.year, t_800_83.num_of_month from t_800_83 order by t_800_83.year,t_800_83.month,t_800_83.num_of_month ASC";
+            NpgsqlCommand cmd = conn.RunCmdPG(sql);
+            NpgsqlDataAdapter da = new NpgsqlDataAdapter(cmd);
+
+            da.Fill(data);
+            conn.ClosePG();
+
+            string JsonString = string.Empty;
+            JsonString = JsonConvert.SerializeObject(GaragTableToList(data.Tables[0]));
+
+            return JsonString;
+
+        }
+        public List<garig> GaragTableToList(DataTable table)
+        {
+            //table to List object
+            garig temp = new garig();
+
+            var convertedList = (from rw in table.AsEnumerable()
+                                 select new garig()
+                                 {
+                                     date = Convert.ToString(rw["year"]) + "-" + Convert.ToString(rw["month"]) + "-" + chekdate(Convert.ToString(rw["num_of_month"])),
+
+                                 }).ToList();
+
+            return convertedList;
+        }
     }
 }

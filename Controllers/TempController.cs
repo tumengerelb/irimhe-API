@@ -40,11 +40,11 @@ namespace irimhe.Controllers
             return ret;
         }
         [HttpGet]
-        public string onlydate()
+        public string getDates()
         {
             TempModel temp = new TempModel();
-            
-            return "Ok";
+
+            return temp.udur();
         }
         [HttpGet]
         public string Temperature(string ttt_aver, string ttt_min, string ttt_max, string beginDateTime, string endDateTime)

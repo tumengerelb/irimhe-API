@@ -97,5 +97,14 @@ namespace irimhe.Controllers
             return ret;
         }
 
+        [HttpGet]
+        
+        public string getDates()
+        {
+            SnowModel snow = new SnowModel();
+
+            return snow.udur();
+        }
+
     }
 }

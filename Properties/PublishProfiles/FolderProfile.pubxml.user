@@ -394,10 +394,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/28/2018 13:04:24</publishTime>
     </File>
     <File Include="bin/Tumee.dll">
-      <publishTime>06/12/2020 10:13:16</publishTime>
+      <publishTime>09/23/2020 13:23:55</publishTime>
     </File>
     <File Include="bin/Tumee.pdb">
-      <publishTime>06/12/2020 10:13:16</publishTime>
+      <publishTime>09/23/2020 13:23:55</publishTime>
     </File>
     <File Include="bin/WebGrease.dll">
       <publishTime>01/23/2014 13:57:34</publishTime>

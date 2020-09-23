@@ -861,16 +861,16 @@ namespace irimhe.Models
         /*
          2020-09-23
          */
-        class garig
+        public class garig
         {
-            string date { get; set; }           
+           public string date { get; set; }           
         }
         public string udur()
         {
             ConnDB conn = new ConnDB();
 
             DataSet data = new DataSet();
-            string sql = "select t_800_80.month , t_800_80.year, t_800_80.num_of_month from t_800_80";
+            string sql = "select distinct t_800_80.month , t_800_80.year, t_800_80.num_of_month from t_800_80 order by t_800_80.year,t_800_80.month,t_800_80.num_of_month ASC";
             NpgsqlCommand cmd = conn.RunCmdPG(sql);
             NpgsqlDataAdapter da = new NpgsqlDataAdapter(cmd);
 
@@ -878,19 +878,19 @@ namespace irimhe.Models
             conn.ClosePG();
 
             string JsonString = string.Empty;
-            JsonString = JsonConvert.SerializeObject(ConstructModel(DataTableToList(data.Tables[0])));
+            JsonString = JsonConvert.SerializeObject(GaragTableToList(data.Tables[0]));
 
             return JsonString;
 
             return "OK";
         }
-        public List<windclass> GaragTableToList(DataTable table)
+        public List<garig> GaragTableToList(DataTable table)
         {
             //table to List object
             garig temp = new garig();
 
             var convertedList = (from rw in table.AsEnumerable()
-                                 select new windclass()
+                                 select new garig()
                                  {   
                                      date = Convert.ToString(rw["year"]) + "-" + Convert.ToString(rw["month"]) + "-" + chekdate(Convert.ToString(rw["num_of_month"])),                                     
 
