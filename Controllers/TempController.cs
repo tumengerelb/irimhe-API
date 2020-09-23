@@ -9,7 +9,6 @@ using Microsoft.SqlServer.Server;
 
 namespace irimhe.Controllers
 {
-
     public class TempController : Controller
     {
         [HttpGet]
@@ -41,6 +40,13 @@ namespace irimhe.Controllers
             return ret;
         }
         [HttpGet]
+        public string onlydate()
+        {
+            TempModel temp = new TempModel();
+            
+            return "Ok";
+        }
+        [HttpGet]
         public string Temperature(string ttt_aver, string ttt_min, string ttt_max, string beginDateTime, string endDateTime)
         {
             return Temperature2(ttt_aver, ttt_min, ttt_max, beginDateTime, endDateTime);
@@ -58,7 +64,7 @@ namespace irimhe.Controllers
 
             return ret;
         }
-        [HttpPost]
+        [HttpGet]
         public string soil(string tx_aver, string tx_max, string tx_min, string beginDateTime, string endDateTime)
         {
             TempModel temp = new TempModel();
@@ -72,7 +78,7 @@ namespace irimhe.Controllers
 
             return ret;
         }
-        [HttpPost]
+        [HttpGet]
         public string wind(string windmax,string beginDateTime, string endDateTime)
         {
             TempModel temp = new TempModel();
@@ -87,7 +93,7 @@ namespace irimhe.Controllers
             return ret;
 
         }
-        [HttpPost]
+        [HttpGet]
         public string percipitation(string sum_rrr_max, string beginDateTime, string endDateTime)
         {
             TempModel temp = new TempModel();

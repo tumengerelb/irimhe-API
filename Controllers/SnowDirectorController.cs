@@ -16,7 +16,7 @@ namespace irimhe.Controllers
             return snow.PullDataPG();
         }
 
-        [HttpPost]
+        [HttpGet]
         public string blizzard(string beginDateTime,string endDateTime)
         {
             SnowDirectionModel snow = new SnowDirectionModel();

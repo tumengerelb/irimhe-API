@@ -858,6 +858,49 @@ namespace irimhe.Models
 
             return JsonString;
         }
+        /*
+         2020-09-23
+         */
+        class garig
+        {
+            string date { get; set; }           
+        }
+        public string udur()
+        {
+            ConnDB conn = new ConnDB();
+
+            DataSet data = new DataSet();
+            string sql = "select t_800_80.month , t_800_80.year, t_800_80.num_of_month from t_800_80";
+            NpgsqlCommand cmd = conn.RunCmdPG(sql);
+            NpgsqlDataAdapter da = new NpgsqlDataAdapter(cmd);
+
+            da.Fill(data);
+            conn.ClosePG();
+
+            string JsonString = string.Empty;
+            JsonString = JsonConvert.SerializeObject(ConstructModel(DataTableToList(data.Tables[0])));
+
+            return JsonString;
+
+            return "OK";
+        }
+        public List<windclass> GaragTableToList(DataTable table)
+        {
+            //table to List object
+            garig temp = new garig();
+
+            var convertedList = (from rw in table.AsEnumerable()
+                                 select new windclass()
+                                 {   
+                                     date = Convert.ToString(rw["year"]) + "-" + Convert.ToString(rw["month"]) + "-" + chekdate(Convert.ToString(rw["num_of_month"])),                                     
+
+                                 }).ToList();
+
+            return convertedList;
+        }
+        /*
+         2020-09-23
+         */
         public string multi_station(string[] sindex)
         {
             ConnDB conn = new ConnDB();
